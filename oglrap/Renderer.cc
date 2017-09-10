@@ -571,6 +571,8 @@ void Renderer::cull()
 
 void Renderer::render()
 { 
+    //LOG(info) << "Renderer::render" ; 
+
     // if(m_instlodcull_enabled) cull();   moved to Scene::preRenderCompute 
 
     glUseProgram(m_program);
@@ -590,6 +592,7 @@ void Renderer::render()
     if( m_instlodcull_enabled )
     {
         assert(m_instanced);
+        //LOG(info) << "glDrawElementsInstanced.instlodcull_enabled"  ;  
 
         for(unsigned i=m_draw_0 ; i < m_draw_1 ; i++)
         { 
@@ -602,8 +605,13 @@ void Renderer::render()
             glDrawElementsInstanced( draw.mode, draw.count, draw.type,  draw.indices, m_lod_counts[i]  ) ;
 
         }
+<<<<<<< local
+        //if(m_verbosity > 0)
+        //std::cout << desc() << std::endl ; 
+=======
         if(m_verbosity > 0)
             std::cout << desc() << std::endl ; 
+>>>>>>> other
     }
     else if( m_lod < 0)   // debugging LOD rendering 
     {
@@ -612,6 +620,7 @@ void Renderer::render()
             glBindVertexArray ( m_vao_all );
 
             const DrawElements& draw = *m_draw[i] ;   
+            //LOG(info) << "glDrawElementsInstanced.lod<0" << draw.desc() ;  
 
             m_lod_counts[i] = draw.primcount ;
 
@@ -622,12 +631,15 @@ void Renderer::render()
     {
         glBindVertexArray ( m_vao[0] );
         const DrawElements& draw = *m_draw[0] ;   
+
         if(m_instanced)
         {
+            //LOG(info) << "glDrawElementsInstanced " << draw.desc() ;  
             glDrawElementsInstanced( draw.mode, draw.count, draw.type,  draw.indices, draw.primcount  ) ;
         }
         else
         {
+            //LOG(info) << "glDrawElements " << draw.desc() ;  
             glDrawElements( draw.mode, draw.count, draw.type,  draw.indices ) ;
         }
     }
